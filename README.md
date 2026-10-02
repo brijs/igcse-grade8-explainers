@@ -4,6 +4,14 @@ Interactive, animated, narrated explainers for Grade 8 (Cambridge Lower Secondar
 
 **Live site: https://brijs.github.io/igcse-grade8-explainers/**
 
+## Run it locally
+
+Open `index.html` in a browser, or serve the folder:
+
+```
+python3 -m http.server 8000     # then browse to http://localhost:8000/
+```
+
 ## Explainers
 
 | Subject | Explainer (live) | Scenes | Topics | Source |
