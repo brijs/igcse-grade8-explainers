@@ -1,0 +1,138 @@
+# Narration for Computer Science with Mummy: one line per scene step (watch, watch, predict, try, summary).
+SCRIPT = {
+ "1.1": [
+  "Every time you go online, you leave a trail called your digital footprint. Some of it is active: things you post, like photos and comments. Some is passive: data collected about you, like the websites you visit, and where your phone has been. And it can stay online for a very long time.",
+  "A good digital citizen is respectful, responsible and safe. Before you post, think. Is it true? Is it kind? Is it necessary? And is it safe to share? Once something is online, other people can copy it and share it.",
+  "Quick question. You post a photo, then delete it one minute later. Can other people still have a copy?",
+  "Sort these into active and passive footprints. Tap an item, then tap the right box. Think about whether you chose to share it, or whether it was collected about you.",
+  "Remember: your digital footprint is the trail of data you leave online. Active is what you share yourself. Passive is data collected about you. Always think before you post."],
+ "1.2": [
+  "Let's talk about behaving well online. Cyberbullying means using technology to upset or threaten someone. If you see it, do not reply, and do not join in. Keep evidence by taking a screenshot. Block and report the person. And tell a trusted adult.",
+  "Here is another problem. Copying someone else's work and saying it is yours is called plagiarism. Pictures, music and writing are protected by copyright. Put things in your own words, say where they came from, and check the licence, or ask permission, before you use them.",
+  "You find a great picture online for your project. What should you do?",
+  "Handle three situations. Read each one, and choose the best way to respond. Think about being kind, honest and respectful.",
+  "Remember: do not join in cyberbullying, report it. Do not plagiarise: use your own words and credit your sources. Respect copyright, and be polite online, which is called netiquette."],
+ "1.3": [
+  "Personal data is information about you: your name, school, phone number, home address, birthday and photos. Look at this public profile. A stranger can read all of it, and could work out where you live and when your birthday is. That is risky.",
+  "You can protect yourself with privacy settings. You can choose public, friends only, or private. Only share the minimum that is needed, and check what permissions apps ask for, such as your location or camera.",
+  "Which of these is safest to put on a public profile?",
+  "Sort the information. Tap an item, then tap whether it is safe to share, or should be kept private.",
+  "Remember: keep your address, phone number, passwords and full date of birth private. Use privacy settings, and share only what is necessary."],
+ "1.4": [
+  "Networks face many threats. Malware is harmful software, such as viruses, worms, spyware and ransomware. Hacking is getting into a system without permission. And in a denial of service attack, a flood of requests overloads the network, so real users cannot get in.",
+  "Phishing is a fake message that tricks you into giving away information. Look at this email. Watch for the clues: a fake sender address, urgent threats, a vague greeting, a strange link, and a request for your password. Tricking people like this is called social engineering.",
+  "An email from an unknown sender says: your account will close, click now. What is it most likely to be?",
+  "Be the detective. Click on the suspicious parts of the email. Find at least four clues.",
+  "Remember: threats include malware, phishing, hacking, denial of service and social engineering. Phishing emails use urgency, strange links and requests for passwords."],
+ "1.5": [
+  "How do we protect a network? A firewall sits between the network and the internet, and blocks suspicious traffic. Antivirus software finds and removes malware. And software updates fix security weaknesses that attackers could use.",
+  "Encryption scrambles data, so that anyone who steals it cannot read it without the key. And backups keep a copy of your files somewhere else, so you can recover them if they are lost, damaged or locked by ransomware.",
+  "Which security measure checks the traffic between your network and the internet?",
+  "Match each threat to the best measure. Tap a threat, then tap the measure that deals with it.",
+  "Remember: a firewall blocks suspicious traffic. Antivirus finds malware. Updates fix weaknesses. Encryption scrambles data. Backups let you recover."],
+ "1.6": [
+  "Passwords are your first line of defence. A weak password, like password one two three, can be guessed instantly. A name and a year takes minutes. But a long password with a mix of words, capitals, numbers and symbols could take centuries. These times are only rough estimates.",
+  "Two step login adds a second check. First you enter your password, which is something you know. Then you enter a code sent to your phone, which is something you have. Even if a thief learns your password, they still cannot log in.",
+  "Which of these is the strongest password?",
+  "Now build a strong password. Make one up, and watch the checklist. Do not type a real password: nothing is saved. Meet all six rules.",
+  "Remember: use long passwords with capitals, lower case, numbers and symbols. Never reuse them, and turn on two step login where you can."],
+ "2.1": [
+  "A spreadsheet is a grid of cells. A formula starts with an equals sign and uses cell references. Watch: in cell E two, we add three marks together. If we change one mark, the total updates automatically.",
+  "Functions are shortcuts. Average finds the mean of a range. Max finds the biggest number. Count counts the numbers. Sum adds them, and min finds the smallest. A range like B two to B six means every cell in between.",
+  "What does the formula sum of B two to B six do?",
+  "Your turn. Click the highlighted cell, type a formula in the formula bar, and press enter. Four tasks: a total, an average, a maximum and a minimum.",
+  "Remember: a formula starts with equals. Sum, average, min, max and count work on a range of cells."],
+ "2.2": [
+  "Watch what happens when we copy a formula. We want tax equals price times the rate, and the rate is in cell B one. We type B four times B one, and it works. But when we copy it down, the formula moves too. B one becomes B two, then B three. Those cells are empty, so the answers are zero. Wrong!",
+  "To fix this, we lock the rate with dollar signs. The dollar signs make an absolute reference, which never moves when copied. Now every row uses the same rate, and the answers are correct.",
+  "Quick question. You copy the formula B two times E one down one row. What does the new formula say?",
+  "Try both ways. Choose relative or absolute, type the formula in C four, and fill it down. Compare the results, and use show formulas to see what changed.",
+  "Remember: a relative reference changes when you copy a formula. An absolute reference, with dollar signs, stays fixed."],
+ "2.3": [
+  "The IF function lets a spreadsheet make a decision. It has three parts: a test, what to show if the test is true, and what to show if it is false. Here, if the mark is at least seventy, show Merit, otherwise show No. Fill it down, and every row is decided.",
+  "To count how many results match, use COUNTIF. Give it a range and a condition. Here it counts how many cells say Merit. The answer is two: Anna and Chitra.",
+  "B two contains forty nine. What does the formula show, if the test is at least fifty, with Pass for true and Fail for false?",
+  "Now write your own. First, type an IF formula in C two that shows Pass for fifty or more, otherwise Fail, and fill it down. Then use COUNTIF to count the passes.",
+  "Remember: IF makes a decision with a test, a true result and a false result. COUNTIF counts the cells that meet a condition."],
+ "2.4": [
+  "Conditional formatting changes how cells look depending on their values. Here, scores below forty turn red, and scores above eighty turn green. The rules keep working: change a score, and the colour changes too.",
+  "Data validation stops wrong data being typed in. This cell only accepts whole numbers from zero to one hundred. If we type one hundred and five, we get an error message. Eighty five is accepted.",
+  "What is data validation used for?",
+  "Try both. First, build a rule to make scores below fifty red. Then try typing an invalid score into the validated cell, and a valid one.",
+  "Remember: conditional formatting changes the look of cells that meet a rule. Data validation limits what can be typed, such as a range of numbers or a list."],
+ "2.5": [
+  "VLOOKUP finds information in a table. You give it four things: the value to look for, the table, the column number to return, and FALSE for an exact match. Here it looks for the code P zero three in the first column, and returns the item from column two: Bag.",
+  "Watch how it works. It checks the first column from the top: P zero one? No. P zero two? No. P zero three? Found! Then it returns the value from the column you chose. Fill down, and every code gets its item.",
+  "In a VLOOKUP formula that ends with three, FALSE, what does the three mean?",
+  "Look up some details. Click the highlighted cell, and type a VLOOKUP formula. Remember the column number: two for the item, three for the price.",
+  "Remember: VLOOKUP finds a value in the first column of a table, and returns a value from a column you choose. Use FALSE for an exact match."],
+ "2.6": [
+  "Here are ten rows of sales data. A pivot table can summarise them for you, without writing any formulas. Put Region in the rows, and ask for the sum of the units. Instantly, we have the total for the North, South and East.",
+  "The same data can be summarised in many ways. Change the rows to Product, and we see totals for each product. Change the calculation to count, and we see how many sales each product had.",
+  "What is a pivot table used for?",
+  "Build your own pivot tables. Choose the field for the rows and the calculation, and check each of the three tasks.",
+  "Remember: a pivot table summarises data. Choose a field for the rows, and a calculation such as sum, count or average."],
+ "2.7": [
+  "Choosing the right chart matters. A bar chart compares categories, like pens, books and bags. A pie chart shows parts of a whole. A line chart shows change over time, like temperature each day. A scatter graph shows whether two things are related.",
+  "A good chart is easy to read. Give it a clear title. Label both axes, and include the units. Use a sensible scale. Without these, people cannot tell what the chart is showing.",
+  "Which chart is best for showing how the temperature changes through the week?",
+  "Match each job to the best chart. Tap a job, then tap the chart type.",
+  "Remember: bar charts compare categories. Line charts show change over time. Pie charts show parts of a whole. Scatter graphs show relationships. Always add a title and label the axes."],
+ "3.1": [
+  "Logic gates are the building blocks of computer circuits. They take inputs of zero or one, and give an output. The NOT gate flips its input. When the input is zero, the output is one. When the input is one, the output is zero.",
+  "The AND gate gives one only if both inputs are one. The OR gate gives one if at least one input is one. A truth table lists every possible input and the output. Watch the table highlight as the inputs change.",
+  "An AND gate has input A equal to one, and input B equal to zero. What is the output?",
+  "Fill in the truth tables yourself. Choose a gate, tap each output box to set it to zero or one, then press check.",
+  "Remember: NOT flips the input. AND gives one only if both inputs are one. OR gives one if at least one input is one."],
+ "3.2": [
+  "A NAND gate is NOT AND: it gives the opposite of an AND gate. A NOR gate is NOT OR: the opposite of an OR gate. Watch the outputs, and compare them with AND and OR.",
+  "The XOR gate is the exclusive OR. It gives one only when the two inputs are different. If both inputs are the same, the output is zero.",
+  "An XOR gate has A equal to one and B equal to one. What is the output?",
+  "Identify the gate. Look at each truth table, and choose which gate makes that pattern. There are four to identify.",
+  "Remember: NAND is NOT AND. NOR is NOT OR. XOR gives one only when the inputs are different."],
+ "3.3": [
+  "Real circuits join gates together. This circuit has three inputs, A, B and C. A and B go into an AND gate. C goes into a NOT gate. Then an OR gate combines the two results to give the output Q.",
+  "Let's trace it. With A, B and C all one, the AND gate gives one, the NOT gate gives zero, and the OR gives one. With A and B zero and C one, both sides are zero, so Q is zero. With all zero, NOT C is one, so Q is one.",
+  "A is zero, B is one, and C is zero. What is Q?",
+  "Explore the circuit. Switch A, B and C on and off. There are five different input combinations that make Q equal to one. Can you find them all?",
+  "Remember: a logic circuit joins gates. Trace the inputs through each gate in turn. With three inputs, a truth table has eight rows."],
+ "3.4": [
+  "Computers add numbers using logic gates. In binary, zero plus zero is zero. Zero plus one is one. One plus zero is one. But one plus one is ten: that is a zero, with a carry of one.",
+  "A half adder does this with two gates. The XOR gate makes the sum bit. The AND gate makes the carry bit. Computers join many adders together to add big numbers.",
+  "What is one plus one in binary?",
+  "Try all four combinations of A and B, and watch the sum and the carry. Then answer one question.",
+  "Remember: a half adder adds two bits. The sum is A XOR B. The carry is A AND B. In binary, one plus one is ten."],
+ "4.1": [
+  "Designers use a process called design thinking. It has five stages. First, empathise: understand the people you are designing for. Second, define: state the problem clearly. Third, ideate: come up with lots of ideas. Fourth, prototype: build a quick model. Fifth, test: try it with users.",
+  "Testing is not the end. You learn what works and what does not, then improve the design and go round the loop again. Designers fail early, and learn fast. That is why the process is called iterative.",
+  "A designer interviews students about how hard it is to carry heavy school bags. Which stage is this?",
+  "Match each activity to its stage. Tap an activity, then tap the stage it belongs to.",
+  "Remember: empathise, define, ideate, prototype, test. Then improve and repeat. Design thinking puts users first."],
+ "4.2": [
+  "Meet Aarav. He is thirteen, and he keeps losing his pens. A designer starts by empathising: watching, asking and listening. Aarav says: I keep losing my pens. My bag is always messy. I want something small. These are his needs.",
+  "Next, define the problem in one clear sentence: Aarav needs a way to keep his pens together, because he keeps losing them. Then ideate: come up with lots of ideas, even wild ones. Later, choose the best one using the user's needs.",
+  "Which is the best problem statement?",
+  "Think like a designer. Answer three questions about needs, brainstorming, and choosing an idea.",
+  "Remember: empathise to find real needs. Define a clear problem statement. When you ideate, think of many ideas first, then choose using the user's needs."],
+ "4.3": [
+  "A prototype is an early model of your idea. A first prototype can be made from paper, which is cheap and quick. The next can be cardboard, which is stronger. The final version might be three D printed. Each is better than the last.",
+  "Watch the loop. We test the first holder. It tips over, so we widen the base. The next version is stable, but the pens do not fit, so we make it taller. The third version passes every test.",
+  "Why make a quick, cheap prototype first?",
+  "Improve the prototype yourself. Change the width and the height, then press test. It must be stable, hold five pens, and fit in a bag.",
+  "Remember: a prototype is a quick, cheap model. Test it with users, find what to fix, improve it, and test again."],
+ "4.4": [
+  "CAD means computer aided design. Programs like Tinkercad let you design objects in three D. You build on a flat grid called the workplane. Drag shapes onto it, resize them with the handles, rotate them, and move them around. Shapes can be solid, or hole.",
+  "To make a hole, add a cylinder, and set it to hole. It turns striped. Move it so it overlaps the box. Then group the shapes. The hole cuts out of the box, leaving a neat hole, perfect for a keyring.",
+  "You want a hole in a box. How should the cylinder be set before you group the shapes?",
+  "Make a keyring tag. Press the buttons in order: add a box, add a cylinder, set it to hole, move it onto the box, then group. What happens if you group two solids?",
+  "Remember: CAD is computer aided design. In Tinkercad, build on the workplane with shapes. Make a hole by setting a shape to hole, then group it with the solid."],
+ "g": [
+  "Hi Krishna! I am so glad you are here. Pick any scene, and let's learn some computer science together.",
+  "Yes! Well done.", "That's right, great job!", "Exactly. You've got it.",
+  "Not quite. Let's look at why.", "Almost! Have a look at the explanation.",
+  "Scene complete. Well done, Krishna!",
+  "Final round! Sixteen questions from all four topics. Take your time, and remember what we practised.",
+  "All done! Let's see how you did.",
+  "Brilliant work! You really know your computer science.",
+  "Good effort. Let's revisit the topics that are still tricky."]
+}

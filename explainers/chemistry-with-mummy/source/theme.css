@@ -1,0 +1,4 @@
+/* Chemistry: purple accent */
+:root{--accent:#6a40c8;--accent-soft:#e7ddf9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#b79cff;--accent-ink:#1b0f38;--accent-soft:#2b2152}}
+:root[data-theme="dark"]{--accent:#b79cff;--accent-ink:#1b0f38;--accent-soft:#2b2152}

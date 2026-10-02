@@ -1,0 +1,27 @@
+/* Computer Science: blue accent + spreadsheet styling */
+:root{--accent:#2f64d8;--accent-soft:#dce7fb}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#8bb0ff;--accent-ink:#0b1b3d;--accent-soft:#1a2c52}}
+:root[data-theme="dark"]{--accent:#8bb0ff;--accent-ink:#0b1b3d;--accent-soft:#1a2c52}
+.stage.html{padding:14px;display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.sheet{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sheet .fx{display:flex;gap:6px;align-items:center}
+.sheet .fx .ref{font-family:var(--f-mono);font-weight:700;min-width:46px;text-align:center;background:var(--accent-soft);border-radius:8px;padding:6px 8px}
+.sheet .fx input{flex:1;font-family:var(--f-mono);font-size:.95rem;padding:6px 10px;border-radius:8px}
+.sheet .fx input[readonly]{opacity:.8}
+.sheet .wrapt{overflow:auto;border:1.5px solid var(--line);border-radius:10px;background:var(--paper)}
+.sheet table{border-collapse:collapse;font-size:.92rem;width:max-content;min-width:100%}
+.sheet th{background:var(--bg);color:var(--muted);font-weight:700;border:1px solid var(--line);padding:3px 8px;font-size:.8rem;position:sticky;top:0}
+.sheet th.rn{width:28px;text-align:center}
+.sheet td{border:1px solid var(--line);padding:4px 8px;height:30px;white-space:nowrap;cursor:cell}
+.sheet td.n{text-align:right;font-family:var(--f-mono)}
+.sheet td.ed{background:rgba(47,100,216,.06)}
+.sheet td.sel{outline:3px solid var(--accent);outline-offset:-3px}
+.sheet td.err{color:var(--bad);font-weight:700}
+.sheet td.hdr{font-weight:800;background:var(--bg)}
+.sheet td.lbl{color:var(--muted);font-weight:700}
+.sheet .msg{min-height:1.4em;font-weight:700;font-size:.92rem}
+.sheet .msg.bad{color:var(--bad)}.sheet .msg.good{color:var(--good)}
+.sheet select.cellsel{font-size:.9rem;padding:4px 8px}
+.pivot td,.pivot th{border:1px solid var(--line);padding:6px 12px}
+.pivot{border-collapse:collapse;background:var(--paper)}
+.chartbox{background:var(--paper);border-radius:14px;border:1.5px solid var(--line);padding:6px}

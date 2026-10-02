@@ -11,7 +11,35 @@ window.EXPLAINERS = [
       ] }
     ]
   },
-  { subject: 'Biology', color: '#2f9e44', terms: [] },
-  { subject: 'History', color: '#c2410c', terms: [] },
-  { subject: 'Computer Science', color: '#4263eb', terms: [] }
+  {
+    subject: 'Chemistry', color: '#7c5cd6',
+    terms: [
+      { term: 'Term 2 (exam revision)', items: [
+        { title: 'Chemistry with Mummy', path: 'explainers/chemistry-with-mummy/',
+          blurb: 'Seventeen narrated, interactive scenes: the atom and the periodic table, ionic and covalent bonding, structures and properties, and displacement reactions.',
+          topics: ['Atoms and the periodic table', 'Bonding and structure', 'Displacement reactions'], status: 'ready' }
+      ] }
+    ]
+  },
+  {
+    subject: 'Biology', color: '#2f9e44',
+    terms: [
+      { term: 'Term 2 (exam revision)', items: [
+        { title: 'Biology with Mummy', path: 'explainers/biology-with-mummy/',
+          blurb: 'Seventeen narrated, interactive scenes: photosynthesis, leaf structure, minerals, the carbon cycle, transport in plants, then DNA, chromosomes, gametes and fertilisation.',
+          topics: ['Photosynthesis', 'Transport in plants', 'Variation and inheritance'], status: 'ready' }
+      ] }
+    ]
+  },
+  {
+    subject: 'Computer Science', color: '#4263eb',
+    terms: [
+      { term: 'Term 2 (exam revision)', items: [
+        { title: 'Computer Science with Mummy', path: 'explainers/computer-science-with-mummy/',
+          blurb: 'Twenty one narrated, interactive scenes: digital citizenship and security, spreadsheets (with a working formula bar), logic gates and circuits, design thinking and CAD.',
+          topics: ['Digital citizenship', 'Network security', 'Spreadsheets', 'Logic gates', 'Design thinking and CAD'], status: 'ready' }
+      ] }
+    ]
+  },
+  { subject: 'History', color: '#c2410c', terms: [] }
 ];

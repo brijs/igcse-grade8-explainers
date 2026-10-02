@@ -1,0 +1,4 @@
+/* Biology: green accent */
+:root{--accent:#1c8a4a;--accent-soft:#d9f2e2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#4fd68a;--accent-ink:#052a14;--accent-soft:#12382a}}
+:root[data-theme="dark"]{--accent:#4fd68a;--accent-ink:#052a14;--accent-soft:#12382a}
