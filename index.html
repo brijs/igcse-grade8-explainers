@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grade 8 IGCSE Explainers</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#f3f6fb;--paper:#fff;--ink:#16213a;--muted:#5a6785;--line:#dde4f0;--shadow:0 2px 10px rgba(22,33,58,.08)}
+@media (prefers-color-scheme:dark){:root{--bg:#10162a;--paper:#1a2240;--ink:#eef2fb;--muted:#9fabc8;--line:#2d3860;--shadow:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 16px 60px;display:flex;flex-direction:column;gap:26px}
+h1{font-family:Fredoka,sans-serif;font-size:clamp(1.9rem,5vw,2.8rem);margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:6px 0 0;max-width:60ch}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{border:1.5px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:800;font-size:.9rem;border-radius:999px;padding:5px 14px}
+section{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);padding:20px;border-top:6px solid var(--c);display:flex;flex-direction:column;gap:14px}
+h2{font-family:Fredoka,sans-serif;margin:0;font-size:1.5rem}
+h3{margin:0;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:14px;text-decoration:none;color:inherit;min-width:0}
+a.card:hover{border-color:var(--c);transform:translateY(-1px)}
+.card b{font-size:1.1rem}.card p{margin:0;color:var(--muted);font-size:.92rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px}.tags span{font-size:.75rem;font-weight:800;background:var(--bg);border-radius:8px;padding:2px 8px}
+.empty{color:var(--muted);font-style:italic;margin:0}
+</style></head><body>
+<div class="wrap">
+ <header><h1>Grade 8 IGCSE Explainers</h1><p class="lead">Short animated, interactive explainers to learn and remember. Pick a subject, then a topic.</p></header>
+ <nav id="nav" aria-label="Subjects"></nav>
+ <main id="main" style="display:flex;flex-direction:column;gap:26px"></main>
+</div>
+<script src="explainers.js"></script>
+<script>
+const E=(t,a,...k)=>{const e=document.createElement(t);Object.entries(a||{}).forEach(([x,v])=>e.setAttribute(x,v));k.flat().forEach(c=>e.append(c));return e};
+const nav=document.getElementById('nav'),main=document.getElementById('main');
+EXPLAINERS.forEach(s=>{
+  const id='s-'+s.subject.toLowerCase().replace(/\W+/g,'-');
+  nav.append(E('a',{href:'#'+id},s.subject));
+  const sec=E('section',{id,style:'--c:'+s.color},E('h2',null,s.subject));
+  if(!s.terms.length)sec.append(E('p',{class:'empty'},'Explainers coming soon.'));
+  s.terms.forEach(t=>{
+    sec.append(E('h3',null,t.term));
+    const g=E('div',{class:'grid'});
+    t.items.forEach(i=>{
+      const ready=i.status==='ready';
+      const card=E(ready?'a':'div',ready?{class:'card',href:i.path}:{class:'card',style:'opacity:.6'},E('b',null,i.title),E('p',null,i.blurb),E('div',{class:'tags'},(i.topics||[]).map(x=>E('span',null,x))));
+      card.style.setProperty('--c',s.color);g.append(card)});
+    sec.append(g)});
+  main.append(sec)});
+</script></body></html>
