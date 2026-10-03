@@ -1,8 +1,8 @@
-/* Cranky Mummy: Tamil phrases, moods, effects and sounds. Opt-in per explainer (add source/cranky.json).
+/* Cranky Mummy: Tamil phrases, moods, effects and sounds. Opt-in per explainer, off by default, reacts to wrong answers only (add source/cranky.json).
    Expects globals from core.js: mum, A, AUDIO, playLine, cur, H, store/prog. Phrases arrive in CRANKY = {phrases,byScene}; clips in AUDIO['ta.<id>']. */
 const Cranky=(()=>{
-  const C={on:true,streak:0,lastAct:Date.now(),lastIdle:0};
-  try{if(localStorage.getItem('mummy-cranky')==='off')C.on=false}catch(e){}
+  const C={on:false,streak:0};
+  try{if(localStorage.getItem('mummy-cranky')==='on')C.on=true}catch(e){}
   const P=id=>CRANKY.phrases.find(p=>p.id===id);
   const pool=w=>CRANKY.phrases.filter(p=>p.when===w);
   const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -47,13 +47,9 @@ const Cranky=(()=>{
     playLine('ta.'+p.id,after);
   }
   C.react=ok=>{
-    if(!C.on)return false;C.lastAct=Date.now();
+    if(!C.on)return false;
     const t=target();if(t)t.dataset.heat=ok?0:Math.min(2,C.streak+1);
-    if(ok){
-      const hadFail=C.streak>0;C.streak=0;mum.mood('cheer');
-      const first=P('sabash'),g=P('paravaillaye');
-      if(Math.random()<.5&&!hadFail)return false; /* often fall back to the normal English cheer */
-      say(first,()=>{if(Math.random()<.6)setTimeout(()=>{mum.mood('oops');say(g)},250)});return true}
+    if(ok){C.streak=0;return false} /* correct answers get the normal English cheer */
     C.streak++;mum.mood('oops');
     const sid=cur&&cur.sc&&cur.sc.id,sp=sid&&CRANKY.byScene&&CRANKY.byScene[sid];
     let p;
@@ -62,7 +58,4 @@ const Cranky=(()=>{
     else p=(sp&&Math.random()<.5)?P(sp):pick(pool('wrong1'));
     say(p);return true};
   C.toggle=()=>{C.on=!C.on;try{localStorage.setItem('mummy-cranky',C.on?'on':'off')}catch(e){}return C.on};
-  ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{C.lastAct=Date.now()},true));
-  setInterval(()=>{if(!C.on||!cur||!A.voice||A.cur)return;const now=Date.now();
-    if(now-C.lastAct>45000&&now-C.lastIdle>45000){C.lastIdle=now;C.lastAct=now;mum.mood('oops');say(pick(pool('idle')))}},5000);
   return C})();

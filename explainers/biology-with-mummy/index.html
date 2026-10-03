@@ -496,11 +496,11 @@ function beaker(x,y,w,h,col,o={}){const g=S('g');const liq=R(x+3,y+h*(o.fill||.4
   g.append(liq,Pth(`M${x} ${y}V${y+h}Q${x} ${y+h+6} ${x+8} ${y+h+6}H${x+w-8}Q${x+w} ${y+h+6} ${x+w} ${y+h}V${y}`,{'stroke-width':3}));return {g,liq}}
 
 const CRANKY={"phrases": [{"id": "aiyo_rama", "when": "wrong1", "ta": "ஐயோ ராமா!", "rom": "Aiyyo Rama!", "en": "Oh my God!", "fx": ["slap"], "rate": "+12%", "pitch": "+10Hz"}, {"id": "yosi", "when": "wrong1", "ta": "மண்டையில ஒண்ணும் இல்லையா? யோசி!", "rom": "Mandai-la onnum illaya? Yosi!", "en": "Nothing in the head? Think!", "fx": ["finger"], "rate": "+8%", "pitch": "+6Hz"}, {"id": "enna_da", "when": "wrong2", "ta": "என்னடா இது? மறுபடியும் தப்பா?", "rom": "Enna da idhu? Marubadiyum thappa?", "en": "What is this? Wrong again?", "fx": ["vein", "finger"], "rate": "+10%", "pitch": "+12Hz"}, {"id": "ketkave", "when": "wrong3", "ta": "நான் சொன்னா கேட்கவே மாட்டியா?", "rom": "Naan sonna ketkave maatiya?", "en": "Don't you ever listen to me?", "fx": ["cooker", "chappal"], "rate": "+15%", "pitch": "+16Hz"}, {"id": "sabash", "when": "right", "ta": "சபாஷ் கண்ணா!", "rom": "Sabaash kanna!", "en": "Well done, my dear!", "fx": ["sparkle"], "rate": "+0%", "pitch": "+4Hz"}, {"id": "paravaillaye", "when": "grudge", "ta": "ம்ம்... பரவாயில்லையே.", "rom": "Hmm... paravaillaye.", "en": "Hmm... not bad.", "fx": ["sigh"], "rate": "-8%", "pitch": "-2Hz"}, {"id": "thoongitiya", "when": "idle", "ta": "தூங்கிட்டியா? படி படின்னு சொல்லிருக்கேன்!", "rom": "Thoongitiya? Padi padi nu sollirukken!", "en": "Fell asleep? I told you to study!", "fx": ["vein", "finger"], "rate": "+10%", "pitch": "+10Hz"}, {"id": "saapteya", "when": "idle", "ta": "சாப்டியா? அப்புறம் படிக்கலாம்.", "rom": "Saapteya? Appuram padikalam.", "en": "Did you eat? We can study later.", "fx": ["sigh"], "rate": "+0%", "pitch": "+2Hz"}, {"id": "bio_chlorophyll", "when": "scene", "ta": "பச்சை மட்டும் தூக்கி எறியுது, நீ மட்டும் எதுவுமே கேட்க மாட்ற!", "rom": "Pachai mattum thookki eriyudhu, nee mattum edhuvume ketka maatra!", "en": "It reflects only the green, and you take nothing in!", "fx": ["vein", "finger"], "rate": "+10%", "pitch": "+10Hz"}, {"id": "bio_stomata", "when": "scene", "ta": "ஸ்டோமாட்டா மூடு, என் பேச்சைக் கேட்கும்போது நீ காதை மூடுற மாதிரி!", "rom": "Stomata moodu, en pechai ketkumbodhu nee kaadhai moodura maathiri!", "en": "Close the stomata, like you close your ears when I talk!", "fx": ["slap"], "rate": "+10%", "pitch": "+10Hz"}], "byScene": {"1.2": "bio_chlorophyll", "1.6": "bio_stomata"}};
-/* Cranky Mummy: Tamil phrases, moods, effects and sounds. Opt-in per explainer (add source/cranky.json).
+/* Cranky Mummy: Tamil phrases, moods, effects and sounds. Opt-in per explainer, off by default, reacts to wrong answers only (add source/cranky.json).
    Expects globals from core.js: mum, A, AUDIO, playLine, cur, H, store/prog. Phrases arrive in CRANKY = {phrases,byScene}; clips in AUDIO['ta.<id>']. */
 const Cranky=(()=>{
-  const C={on:true,streak:0,lastAct:Date.now(),lastIdle:0};
-  try{if(localStorage.getItem('mummy-cranky')==='off')C.on=false}catch(e){}
+  const C={on:false,streak:0};
+  try{if(localStorage.getItem('mummy-cranky')==='on')C.on=true}catch(e){}
   const P=id=>CRANKY.phrases.find(p=>p.id===id);
   const pool=w=>CRANKY.phrases.filter(p=>p.when===w);
   const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -545,13 +545,9 @@ const Cranky=(()=>{
     playLine('ta.'+p.id,after);
   }
   C.react=ok=>{
-    if(!C.on)return false;C.lastAct=Date.now();
+    if(!C.on)return false;
     const t=target();if(t)t.dataset.heat=ok?0:Math.min(2,C.streak+1);
-    if(ok){
-      const hadFail=C.streak>0;C.streak=0;mum.mood('cheer');
-      const first=P('sabash'),g=P('paravaillaye');
-      if(Math.random()<.5&&!hadFail)return false; /* often fall back to the normal English cheer */
-      say(first,()=>{if(Math.random()<.6)setTimeout(()=>{mum.mood('oops');say(g)},250)});return true}
+    if(ok){C.streak=0;return false} /* correct answers get the normal English cheer */
     C.streak++;mum.mood('oops');
     const sid=cur&&cur.sc&&cur.sc.id,sp=sid&&CRANKY.byScene&&CRANKY.byScene[sid];
     let p;
@@ -560,9 +556,6 @@ const Cranky=(()=>{
     else p=(sp&&Math.random()<.5)?P(sp):pick(pool('wrong1'));
     say(p);return true};
   C.toggle=()=>{C.on=!C.on;try{localStorage.setItem('mummy-cranky',C.on?'on':'off')}catch(e){}return C.on};
-  ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{C.lastAct=Date.now()},true));
-  setInterval(()=>{if(!C.on||!cur||!A.voice||A.cur)return;const now=Date.now();
-    if(now-C.lastAct>45000&&now-C.lastIdle>45000){C.lastIdle=now;C.lastAct=now;mum.mood('oops');say(pick(pool('idle')))}},5000);
   return C})();
 
 /* Biology shared pieces */
