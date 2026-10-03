@@ -1,0 +1,23 @@
+#crankyfx{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.cx{position:fixed;font-size:2rem;line-height:1;will-change:transform,opacity}
+.cx-bubble{position:fixed;max-width:min(300px,86vw);background:#fff;color:#2a1620;border:3px solid #c0392b;border-radius:16px;padding:8px 12px;font-weight:800;box-shadow:0 6px 18px #0004;animation:cxpop .25s,cxwob .5s .25s 3}
+.cx-bubble b{display:block;font-size:1.05rem}.cx-bubble i{display:block;font-style:normal;font-size:.8rem;opacity:.7;font-weight:700}.cx-bubble u{display:block;text-decoration:none;font-size:.9rem;color:#c0392b}
+@keyframes cxpop{from{transform:scale(.3);opacity:0}}
+@keyframes cxwob{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+@keyframes cxrise{from{opacity:.9;transform:translateY(0) scale(.6)}to{opacity:0;transform:translateY(-70px) scale(1.5)}}
+@keyframes cxpuff{from{opacity:.9;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx),-60px) scale(1.6)}}
+@keyframes cxveinpop{0%{transform:scale(0)}40%{transform:scale(1.5) rotate(10deg)}100%{transform:scale(1) rotate(-6deg);opacity:0}}
+@keyframes cxchappal{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),-40px) rotate(900deg);opacity:0}}
+@keyframes cxsparkle{from{transform:translate(0,0) scale(.3);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.2);opacity:0}}
+@keyframes cxshakehead{15%{transform:rotate(-9deg)}45%{transform:rotate(9deg)}75%{transform:rotate(-6deg)}}
+@keyframes cxslap{30%{transform:translateY(8px) rotate(-6deg)}60%{transform:translateY(8px) rotate(6deg)}}
+@keyframes cxfinger{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}}
+@keyframes cxcooker{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px) rotate(-3deg)}40%{transform:translateX(5px) rotate(3deg)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.mum.cx-shakehead{transform-origin:50% 90%;animation:cxshakehead 1s}
+.mum.cx-slap{animation:cxslap .9s}
+.mum.cx-finger{animation:cxfinger .9s}
+.mum.cx-cooker{animation:cxcooker .2s 6;filter:saturate(1.6) hue-rotate(-12deg) drop-shadow(0 0 8px #e03131)}
+.mum[data-heat="1"]{filter:saturate(1.2)}
+.mum[data-heat="2"]{filter:saturate(1.45) hue-rotate(-8deg)}
+.tool.cranky[aria-pressed="false"]{opacity:.6}
+@media (prefers-reduced-motion:reduce){.mum[class*="cx-"]{animation:none}.cx,.cx-bubble{animation:none!important}}
