@@ -1,0 +1,7 @@
+{"voice":"ta-IN-PallaviNeural",
+ "phrases":[
+  {"id":"phy_density","when":"scene","ta":"மிதக்குதா, மூழ்குதா? உன் மார்க் மாதிரி மூழ்கிடுச்சு பாரு!","rom":"Midhakkudha, moozhgudha? Un mark maathiri moozhgiduchu paaru!","en":"Float or sink? It sank like your marks!","fx":["slap"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"phy_speed","when":"scene","ta":"இவ்வளவு வேகமா தப்பு பண்றியே! வேகத்தை சரியா போடு!","rom":"Evvalavu vegama thappu panriye! Vegathai sariya podu!","en":"Making mistakes so fast! Get the speed right!","fx":["vein","finger"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"phy_conduction","when":"scene","ta":"கரண்டி சூடாகுது, என் மண்டையும் சூடாகுது!","rom":"Karandi soodaagudhu, en mandaiyum soodaagudhu!","en":"The spoon is heating up, and so is my head!","fx":["cooker"],"rate":"+10%","pitch":"+10Hz"}
+ ],
+ "byScene":{"3.3":"phy_density","1.3":"phy_speed","4.2":"phy_conduction"}}

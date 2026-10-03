@@ -47,7 +47,7 @@ function playLine(key,onend){
   a.onended=()=>{mum.talk(false);A.cur=null;if(onend)onend()};
   const p=a.play();if(p&&p.catch)p.catch(()=>{mum.talk(false)});
 }
-const cheer=ok=>{mum.mood(ok?'cheer':'oops');playLine(ok?'g.'+(1+Math.floor(Math.random()*3)):'g.'+(4+Math.floor(Math.random()*2)))};
+const cheer=ok=>{if(typeof Cranky!=='undefined'&&Cranky.react(ok))return;mum.mood(ok?'cheer':'oops');playLine(ok?'g.'+(1+Math.floor(Math.random()*3)):'g.'+(4+Math.floor(Math.random()*2)))};
 
 /* ---------- Graph helper ---------- */
 function mkGraph(parent,o){
@@ -124,7 +124,9 @@ function header(){
   const brand=H('button',{class:'brand',onclick:()=>showHome()});const lg=mum.make();lg.style.width='34px';lg.style.height='34px';brand.append(lg,'Physics with Mummy');
   const vb=H('button',{class:'tool','aria-pressed':String(A.voice),onclick:()=>{A.voice=!A.voice;vb.setAttribute('aria-pressed',String(A.voice));vb.textContent=A.voice?'Voice on':'Voice off';if(!A.voice)stopAudio()}},A.voice?'Voice on':'Voice off');
   const rates=[0.85,1,1.25];const sb=H('button',{class:'tool',onclick:()=>{A.rate=rates[(rates.indexOf(A.rate)+1)%3];sb.textContent='Speed '+A.rate+'x';if(A.cur)A.cur.playbackRate=A.rate}},'Speed '+A.rate+'x');
-  hd.append(brand,H('span',{class:'spacer'}),vb,sb);return hd;
+  hd.append(brand,H('span',{class:'spacer'}));
+  if(typeof Cranky!=='undefined'){const cb=H('button',{class:'tool cranky','aria-pressed':String(Cranky.on),onclick:()=>{const on=Cranky.toggle();cb.setAttribute('aria-pressed',String(on));cb.textContent=on?'Cranky Mummy on':'Cranky Mummy off'}},Cranky.on?'Cranky Mummy on':'Cranky Mummy off');hd.append(cb)}
+  hd.append(vb,sb);return hd;
 }
 function frame(){leave();app.innerHTML='';window.scrollTo(0,0);app.append(header())}
 

@@ -9,3 +9,7 @@ Grade 8 chemistry in 17 scenes and three acts, plus a 15-question final round an
 - **Act 3, displacement reactions (Unit 6):** the reactivity series; metal displacement; word and symbol equations; halogen displacement.
 
 `source/` holds the scenes, narration (`script.py`), audio clips and a `STORYBOARD.md`. Rebuild with `python3 ../_shared/build.py chemistry-with-mummy` (see the main README).
+
+## Cranky Mummy (Tamil)
+
+Opt-in via `source/cranky.json`. Tamil phrases, effects and sounds; toggle in the header. Engine and generic phrases: `../_shared/cranky/` (see the Biology README).

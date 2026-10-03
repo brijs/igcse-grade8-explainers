@@ -10,3 +10,7 @@ Grade 8 computer science in 21 scenes and four acts, plus a 16-question final ro
 - **Act 4, design thinking and CAD (Unit 4):** the design thinking process; empathise, define and ideate; prototype and test; CAD basics (a Tinkercad-style mock-up).
 
 `source/` holds the scenes, narration (`script.py`), audio clips and a `STORYBOARD.md`. Rebuild with `python3 ../_shared/build.py computer-science-with-mummy` (see the main README).
+
+## Cranky Mummy (Tamil)
+
+Opt-in via `source/cranky.json`. Tamil phrases, effects and sounds; toggle in the header. Engine and generic phrases: `../_shared/cranky/` (see the Biology README).

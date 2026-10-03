@@ -1,0 +1,7 @@
+{"voice":"ta-IN-PallaviNeural",
+ "phrases":[
+  {"id":"cs_password","when":"scene","ta":"பாஸ்வேர்டு 1234 வச்சா எப்படிடா? திருடன் சிரிப்பான்!","rom":"Password 1234 vachaa eppadida? Thirudan sirippaan!","en":"Password 1234? The thief will laugh!","fx":["slap"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"cs_footprint","when":"scene","ta":"இன்டர்நெட்ல போட்டதை அழிக்கவே முடியாது, அம்மாவுக்கும் தெரியும்!","rom":"Internet-la pottadhai azhikkave mudiyaadhu, ammavukkum theriyum!","en":"What you post online can't be erased, and Mummy will know!","fx":["vein","finger"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"cs_logic","when":"scene","ta":"AND-னா ரெண்டும் சரியா இருக்கணும், படிப்பும் ஒழுக்கமும் மாதிரி!","rom":"AND-na rendum sariya irukkanum, padippum ozhukkamum maathiri!","en":"AND needs both to be true, like studying and discipline!","fx":["finger"],"rate":"+10%","pitch":"+10Hz"}
+ ],
+ "byScene":{"1.6":"cs_password","1.1":"cs_footprint","3.1":"cs_logic"}}

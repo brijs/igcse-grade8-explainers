@@ -1,0 +1,7 @@
+{"voice":"ta-IN-PallaviNeural",
+ "phrases":[
+  {"id":"chem_ionic","when":"scene","ta":"எலக்ட்ரான்கூட வாங்கிக்குது, நான் சொன்னதை மட்டும் வாங்கிக்க மாட்டியா?","rom":"Electron-kooda vaangikkudhu, naan sonnadhai mattum vaangikka maatiya?","en":"Even an atom takes electrons, but you won't take my advice?","fx":["vein","finger"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"chem_alkali","when":"scene","ta":"சோடியம் தண்ணியில வெடிக்குது, என் பொறுமையும் வெடிக்கப்போகுது!","rom":"Sodium thanniyila vedikkudhu, en porumaiyum vedikka pogudhu!","en":"Sodium explodes in water, and my patience is about to!","fx":["cooker"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"chem_displace","when":"scene","ta":"சுறுசுறுப்பான உலோகம் ஜெயிக்கும், சோம்பேறி வெளிய போகும்!","rom":"Suru-suruppana ulogam jeyikkum, somberi veliya pogum!","en":"The active metal wins, the lazy one gets kicked out!","fx":["chappal"],"rate":"+10%","pitch":"+10Hz"}
+ ],
+ "byScene":{"2.2":"chem_ionic","1.5":"chem_alkali","3.2":"chem_displace"}}
