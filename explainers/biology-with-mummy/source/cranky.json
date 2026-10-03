@@ -1,0 +1,6 @@
+{"voice":"ta-IN-PallaviNeural",
+ "phrases":[
+  {"id":"bio_chlorophyll","when":"scene","ta":"பச்சை மட்டும் தூக்கி எறியுது, நீ மட்டும் எதுவுமே கேட்க மாட்ற!","rom":"Pachai mattum thookki eriyudhu, nee mattum edhuvume ketka maatra!","en":"It reflects only the green, and you take nothing in!","fx":["vein","finger"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"bio_stomata","when":"scene","ta":"ஸ்டோமாட்டா மூடு, என் பேச்சைக் கேட்கும்போது நீ காதை மூடுற மாதிரி!","rom":"Stomata moodu, en pechai ketkumbodhu nee kaadhai moodura maathiri!","en":"Close the stomata, like you close your ears when I talk!","fx":["slap"],"rate":"+10%","pitch":"+10Hz"}
+ ],
+ "byScene":{"1.2":"bio_chlorophyll","1.6":"bio_stomata"}}

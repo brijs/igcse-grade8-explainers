@@ -1,0 +1,11 @@
+{"voice":"ta-IN-PallaviNeural",
+ "phrases":[
+  {"id":"aiyo_rama","when":"wrong1","ta":"ஐயோ ராமா!","rom":"Aiyyo Rama!","en":"Oh my God!","fx":["slap"],"rate":"+12%","pitch":"+10Hz"},
+  {"id":"yosi","when":"wrong1","ta":"மண்டையில ஒண்ணும் இல்லையா? யோசி!","rom":"Mandai-la onnum illaya? Yosi!","en":"Nothing in the head? Think!","fx":["finger"],"rate":"+8%","pitch":"+6Hz"},
+  {"id":"enna_da","when":"wrong2","ta":"என்னடா இது? மறுபடியும் தப்பா?","rom":"Enna da idhu? Marubadiyum thappa?","en":"What is this? Wrong again?","fx":["vein","finger"],"rate":"+10%","pitch":"+12Hz"},
+  {"id":"ketkave","when":"wrong3","ta":"நான் சொன்னா கேட்கவே மாட்டியா?","rom":"Naan sonna ketkave maatiya?","en":"Don't you ever listen to me?","fx":["cooker","chappal"],"rate":"+15%","pitch":"+16Hz"},
+  {"id":"sabash","when":"right","ta":"சபாஷ் கண்ணா!","rom":"Sabaash kanna!","en":"Well done, my dear!","fx":["sparkle"],"rate":"+0%","pitch":"+4Hz"},
+  {"id":"paravaillaye","when":"grudge","ta":"ம்ம்... பரவாயில்லையே.","rom":"Hmm... paravaillaye.","en":"Hmm... not bad.","fx":["sigh"],"rate":"-8%","pitch":"-2Hz"},
+  {"id":"thoongitiya","when":"idle","ta":"தூங்கிட்டியா? படி படின்னு சொல்லிருக்கேன்!","rom":"Thoongitiya? Padi padi nu sollirukken!","en":"Fell asleep? I told you to study!","fx":["vein","finger"],"rate":"+10%","pitch":"+10Hz"},
+  {"id":"saapteya","when":"idle","ta":"சாப்டியா? அப்புறம் படிக்கலாம்.","rom":"Saapteya? Appuram padikalam.","en":"Did you eat? We can study later.","fx":["sigh"],"rate":"+0%","pitch":"+2Hz"}
+ ]}
