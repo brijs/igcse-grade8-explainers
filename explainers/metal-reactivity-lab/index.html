@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Metal Reactivity Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef3f3; --surface:#ffffff; --surface2:#f4f8f8; --ink:#14232b; --muted:#566872; --line:#d3dfe0;
+  --accent:#0b7a80; --accent-ink:#ffffff; --copper:#b4562f; --gold:#c8961a;
+  --yes-bg:#d8f2e2; --yes-ink:#0b5a33; --yes-line:#66c58f;
+  --no-bg:#fbe0dc; --no-ink:#8c2316; --no-line:#e49a90;
+  --same-bg:#e6edee; --glass:#8fa7ae;
+  --shadow:0 1px 2px rgba(20,35,43,.08),0 6px 18px rgba(20,35,43,.06);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d171d; --surface:#15232b; --surface2:#1a2b34; --ink:#e9f0ee; --muted:#9bb0b8; --line:#2b3f4a;
+    --accent:#4fc6cc; --accent-ink:#06262a; --copper:#e08a5e; --gold:#f0c24a;
+    --yes-bg:#12382a; --yes-ink:#8fe3b2; --yes-line:#2f7a52;
+    --no-bg:#3d1c19; --no-ink:#f4a89f; --no-line:#7e3b34;
+    --same-bg:#1c2d36; --glass:#6f8a94; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d171d; --surface:#15232b; --surface2:#1a2b34; --ink:#e9f0ee; --muted:#9bb0b8; --line:#2b3f4a;
+  --accent:#4fc6cc; --accent-ink:#06262a; --copper:#e08a5e; --gold:#f0c24a;
+  --yes-bg:#12382a; --yes-ink:#8fe3b2; --yes-line:#2f7a52;
+  --no-bg:#3d1c19; --no-ink:#f4a89f; --no-line:#7e3b34;
+  --same-bg:#1c2d36; --glass:#6f8a94; --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:inherit;}
+html,body{height:auto;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;}
+h1,h2,h3{font-family:"Space Grotesk","IBM Plex Sans",system-ui,Arial,sans-serif;line-height:1.15;margin:0;font-weight:600;}
+p{margin:0;}
+button{font:inherit;color:inherit;}
+sub{font-size:.72em;line-height:0;}
+.wrap{max-width:980px;margin:0 auto;padding:18px 16px 56px;}
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+header.top h1{font-size:clamp(26px,5vw,38px);}
+header.top p{color:var(--muted);max-width:46ch;margin-top:6px;}
+.tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:5px;box-shadow:var(--shadow);}
+.tab{border:0;background:transparent;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--muted);min-height:44px;}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);}
+.tab:focus-visible,.btn:focus-visible,.cell:focus-visible,.opt:focus-visible,.chip:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);}
+.stack{display:grid;gap:14px;}
+.muted{color:var(--muted);}
+.sw{display:inline-block;width:16px;height:16px;border-radius:50%;border:1px solid rgba(20,35,43,.35);vertical-align:-3px;margin-right:6px;flex:none;}
+.sw.sq{border-radius:4px;}
+
+/* ladder */
+.split{display:grid;gap:14px;grid-template-columns:1fr;}
+@media(min-width:760px){.split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);}}
+.ladder{display:grid;gap:8px;margin-top:12px;}
+.rung{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;font-weight:600;color:#fff;}
+.rung small{margin-left:auto;font-weight:500;opacity:.92;}
+.rung .sw{border-color:rgba(255,255,255,.8);}
+.axis{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-top:8px;}
+.rule{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);}
+
+/* grid */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:12px 0;}
+.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.seg button{border:0;background:var(--surface2);padding:9px 14px;cursor:pointer;font-weight:600;color:var(--muted);min-height:42px;}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);}
+.btn{border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:10px 16px;cursor:pointer;font-weight:600;min-height:44px;}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;}
+.btn:disabled{opacity:.5;cursor:default;}
+.gridwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.grid{border-collapse:separate;border-spacing:7px;width:100%;min-width:600px;}
+table.grid th{font-weight:500;text-align:left;vertical-align:middle;padding:4px 6px;font-size:14px;}
+table.grid thead th{text-align:center;vertical-align:bottom;}
+table.grid thead th b,table.grid tbody th b{display:block;font-family:"Space Grotesk",sans-serif;font-size:16px;}
+table.grid small{display:block;color:var(--muted);font-size:13px;}
+.corner{font-size:13px;color:var(--muted);}
+.corner span{display:block;}
+.ws{display:inline-block;margin-top:3px;font-size:12px;font-style:normal;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:20px;padding:0 8px;}
+.cell{width:100%;min-height:118px;border-radius:14px;border:2px solid;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 6px;text-align:center;}
+.cell b{font-size:14px;}
+.cell small{font-size:12px;opacity:.9;}
+.cell svg{display:block;}
+.cell.yes{background:var(--yes-bg);color:var(--yes-ink);border-color:var(--yes-line);}
+.cell.no{background:var(--no-bg);color:var(--no-ink);border-color:var(--no-line);}
+.cell.same{background:repeating-linear-gradient(135deg,var(--same-bg) 0 9px,transparent 9px 18px);border-style:dashed;color:var(--muted);border-color:var(--line);}
+.cell.sel{box-shadow:0 0 0 3px var(--accent);}
+.cell.covered{background:var(--surface2);border:2px dashed var(--line);color:var(--muted);}
+.cell.covered>*{display:none;}
+.cell.covered::after{content:"?";font:700 30px "Space Grotesk",sans-serif;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:var(--muted);margin-top:8px;}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;border:2px solid;vertical-align:-2px;margin-right:6px;}
+.legend .y{background:var(--yes-bg);border-color:var(--yes-line);} .legend .n{background:var(--no-bg);border-color:var(--no-line);}
+.legend .s{background:var(--same-bg);border:2px dashed var(--line);}
+.detail{display:grid;gap:14px;grid-template-columns:auto 1fr;align-items:start;}
+@media(max-width:560px){.detail{grid-template-columns:1fr;}}
+.tubes{display:flex;gap:14px;align-items:flex-end;}
+.tubes figure{margin:0;text-align:center;font-size:13px;color:var(--muted);}
+.eq{font-family:"Space Grotesk",sans-serif;font-size:17px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-top:8px;overflow-x:auto;white-space:nowrap;}
+.verdict{display:inline-block;font-weight:700;border-radius:20px;padding:2px 12px;margin-bottom:8px;}
+.verdict.y{background:var(--yes-bg);color:var(--yes-ink);} .verdict.n{background:var(--no-bg);color:var(--no-ink);} .verdict.s{background:var(--same-bg);color:var(--muted);}
+.hooks{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+.hook{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:14px;}
+.hook h3{font-size:17px;margin-bottom:4px;}
+table.facts{width:100%;border-collapse:collapse;font-size:15px;}
+table.facts th,table.facts td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle;}
+table.facts th{color:var(--muted);font-weight:600;}
+table.facts tr:last-child td{border-bottom:0;}
+
+/* quiz */
+.hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.lv{flex:1 1 220px;min-width:180px;}
+.lv b{font-family:"Space Grotesk",sans-serif;}
+.bar{height:10px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:6px;}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:8px;transition:width .5s ease;}
+.pill{background:var(--surface2);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-weight:600;white-space:nowrap;}
+.qcard{position:relative;margin-top:14px;}
+.qtag{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);background:var(--surface2);border:1px solid var(--line);border-radius:20px;padding:2px 12px;margin-bottom:10px;}
+.qtext{font-size:clamp(18px,3.4vw,22px);font-family:"Space Grotesk","IBM Plex Sans",sans-serif;font-weight:500;line-height:1.3;}
+.qtext ul{margin:10px 0;padding-left:20px;font-family:"IBM Plex Sans",sans-serif;font-size:16px;font-weight:400;}
+.opts{display:grid;gap:10px;margin-top:16px;}
+@media(min-width:640px){.opts.two{grid-template-columns:1fr 1fr;}}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:var(--surface2);border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;min-height:54px;}
+.opt kbd{flex:none;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font:600 13px "IBM Plex Sans",sans-serif;color:var(--muted);}
+.opt:hover:not(:disabled){border-color:var(--accent);}
+.opt:disabled{cursor:default;}
+.opt.right{background:var(--yes-bg);border-color:var(--yes-line);color:var(--yes-ink);}
+.opt.wrong{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink);}
+.opt.dim{opacity:.55;}
+.shake{animation:shake .35s;}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);}
+.fb.good{border-color:var(--yes-line);background:var(--yes-bg);color:var(--yes-ink);}
+.fb.bad{border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);}
+.fb b.h{display:block;font-family:"Space Grotesk",sans-serif;font-size:18px;margin-bottom:2px;}
+.pop{position:absolute;right:18px;top:14px;font:700 20px "Space Grotesk",sans-serif;color:var(--gold);animation:pop .9s ease-out forwards;pointer-events:none;}
+@keyframes pop{0%{opacity:0;transform:translateY(8px) scale(.9)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px) scale(1.15)}}
+.modes{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:14px;}
+.mode{display:block;text-align:left;width:100%;background:var(--surface2);border:2px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;}
+.mode:hover{border-color:var(--accent);}
+.mode h3{font-size:19px;} .mode p{color:var(--muted);font-size:15px;margin-top:4px;}
+.chip{display:inline-flex;align-items:center;gap:8px;cursor:pointer;margin-top:14px;font-weight:500;min-height:36px;}
+.chip input{width:20px;height:20px;accent-color:var(--accent);}
+.badges{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:12px;}
+.badge{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface2);}
+.badge .ic{font-size:26px;filter:grayscale(1);opacity:.45;}
+.badge.on{border-color:var(--gold);}
+.badge.on .ic{filter:none;opacity:1;}
+.badge b{display:block;font-size:14px;margin-top:4px;} .badge small{color:var(--muted);font-size:12.5px;line-height:1.3;display:block;}
+.skills{display:grid;gap:8px;margin-top:12px;}
+.skill{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:14px;}
+@media(max-width:520px){.skill{grid-template-columns:110px 1fr 40px;}}
+.skill .bar{margin:0;}
+.stars{font-size:38px;letter-spacing:6px;}
+.sum{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin:14px 0;}
+.sum div{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;}
+.sum b{display:block;font:700 26px "Space Grotesk",sans-serif;}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none;}
+.toast div{background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 16px;font-weight:600;box-shadow:var(--shadow);animation:toast .4s ease-out;}
+@keyframes toast{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+[hidden]{display:none!important;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Metal reactivity lab</h1>
+      <p>Which metals push other metals out of a solution? Learn the pattern once, then drill it until it sticks.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="t-pattern" aria-controls="p-pattern" aria-selected="true" data-tab="pattern">Pattern</button>
+      <button class="tab" role="tab" id="t-quiz" aria-controls="p-quiz" aria-selected="false" data-tab="quiz">Quiz</button>
+    </div>
+  </header>
+
+  <!-- PATTERN -->
+  <section id="p-pattern" role="tabpanel" aria-labelledby="t-pattern" class="stack">
+    <div class="split">
+      <div class="card">
+        <h2>The one rule</h2>
+        <p class="muted" style="margin-top:6px">A more reactive metal displaces a less reactive metal from its solution. Learn this order, top to bottom:</p>
+        <div class="ladder" id="ladder"></div>
+        <div class="axis"><span>&#9650; most reactive</span><span>least reactive &#9660;</span></div>
+        <div class="rule"><b>Read it like a contest.</b> The metal strip wins if it sits <em>above</em> the metal in the solution. If it sits below or is the same metal, nothing happens.</div>
+      </div>
+      <div class="card">
+        <h2>Pattern tricks</h2>
+        <div class="hooks" style="margin-top:12px">
+          <div class="hook"><h3>The staircase</h3><p>Every reaction sits in the top-right triangle of the grid. The diagonal and everything below it is "no reaction".</p></div>
+          <div class="hook"><h3>Top row wins</h3><p>Aluminium displaces every metal below it. Copper, on the bottom row, displaces nothing.</p></div>
+          <div class="hook"><h3>First column loses</h3><p>Nothing can displace aluminium from its solution, so that whole column is red.</p></div>
+          <div class="hook"><h3>Same metal, no reaction</h3><p>Aluminium in aluminium sulphate has nothing to swap, so it is always "no reaction".</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Reaction grid</h2>
+      <p class="muted" style="margin-top:6px">Each cell is a test tube: a metal strip dipped in a metal sulphate solution. Tap a cell for the full story.</p>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Mode">
+          <button id="m-study" aria-pressed="true">Study</button>
+          <button id="m-cover" aria-pressed="false">Cover and test</button>
+        </div>
+        <div id="coverTools" hidden style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="pill" id="revCount">0 of 16 revealed</span>
+          <button class="btn" id="revAll">Reveal all</button>
+          <button class="btn" id="recover">Cover again</button>
+        </div>
+      </div>
+      <div class="gridwrap"><div id="grid"></div></div>
+      <div class="legend">
+        <span><i class="y"></i>Reacts: strip is coated, solution may change colour</span>
+        <span><i class="n"></i>No reaction: nothing changes</span>
+        <span><i class="s"></i>Same metal</span>
+      </div>
+    </div>
+
+    <div class="card" id="detailCard">
+      <div id="detail" class="muted">Tap any cell in the grid to see what happens, the equation and the reason.</div>
+    </div>
+
+    <div class="card">
+      <h2>Know your compounds</h2>
+      <p class="muted" style="margin-top:6px">From the worksheet. These names, formulas and colours turn up in every question.</p>
+      <div style="overflow-x:auto;margin-top:8px"><table class="facts" id="facts"></table></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="p-quiz" role="tabpanel" aria-labelledby="t-quiz" hidden>
+    <div id="quiz"></div>
+  </section>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- data ---------- */
+var METALS=[
+ {k:"Al",name:"Aluminium",lname:"aluminium",sulf:"aluminium sulphate",f:"Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub>",ft:"Al\u2082(SO\u2084)\u2083",solCol:"colourless",solHex:"#e4eef0",mCol:"white",mHex:"#f1f0eb",rank:0,ws:true},
+ {k:"Zn",name:"Zinc",lname:"zinc",sulf:"zinc sulphate",f:"ZnSO<sub>4</sub>",ft:"ZnSO\u2084",solCol:"colourless",solHex:"#e4eef0",mCol:"silver-white",mHex:"#c4ccd2",rank:1,ws:false},
+ {k:"Fe",name:"Iron",lname:"iron",sulf:"iron(II) sulphate",f:"FeSO<sub>4</sub>",ft:"FeSO\u2084",solCol:"light green",solHex:"#b3dc9e",mCol:"blackish grey",mHex:"#454a50",rank:2,ws:true},
+ {k:"Cu",name:"Copper",lname:"copper",sulf:"copper sulphate",f:"CuSO<sub>4</sub>",ft:"CuSO\u2084",solCol:"blue",solHex:"#3f86e0",mCol:"reddish-brown",mHex:"#b4562f",rank:3,ws:false}
+];
+var EQ={AlZn:"2Al + 3ZnSO\u2084 \u2192 Al\u2082(SO\u2084)\u2083 + 3Zn",AlFe:"2Al + 3FeSO\u2084 \u2192 Al\u2082(SO\u2084)\u2083 + 3Fe",AlCu:"2Al + 3CuSO\u2084 \u2192 Al\u2082(SO\u2084)\u2083 + 3Cu",
+        ZnFe:"Zn + FeSO\u2084 \u2192 ZnSO\u2084 + Fe",ZnCu:"Zn + CuSO\u2084 \u2192 ZnSO\u2084 + Cu",FeCu:"Fe + CuSO\u2084 \u2192 FeSO\u2084 + Cu"};
+var PAIRS=[];METALS.forEach(function(m){METALS.forEach(function(s){PAIRS.push([m,s]);});});
+function reacts(m,s){return m.rank<s.rank;}
+function same(m,s){return m.k===s.k;}
+function cap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function $(s){return document.querySelector(s);}
+function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+
+/* ---------- test tube drawing ---------- */
+function tube(m,s,after,scale){
+  var react=reacts(m,s);
+  var liquid=(after&&react)?m.solHex:s.solHex;
+  var strip=(after&&react)?s.mHex:m.mHex;
+  var colourless=(liquid===m.solHex&&m.solCol==="colourless")||liquid==="#e4eef0";
+  var w=40*scale,h=70*scale;
+  return '<svg viewBox="0 0 40 70" width="'+w+'" height="'+h+'" aria-hidden="true">'+
+   '<path d="M9 22 V50 A11 11 0 0 0 31 50 V22 Z" fill="'+liquid+'" fill-opacity="'+(colourless?0.55:0.92)+'"/>'+
+   '<rect x="17" y="1" width="6" height="45" rx="1.5" fill="'+strip+'" stroke="rgba(20,35,43,.45)" stroke-width="0.8"/>'+
+   '<path d="M8 3 V50 A12 12 0 0 0 32 50 V3" fill="none" stroke="var(--glass)" stroke-width="1.8" stroke-linecap="round"/>'+
+   '</svg>';
+}
+
+/* ---------- ladder + facts ---------- */
+(function(){
+  var L=$("#ladder"),html="";
+  METALS.forEach(function(m,i){
+    var pct=100-i*9;
+    var mix=88-i*17;
+    html+='<div class="rung" style="width:'+pct+'%;background:color-mix(in srgb,var(--accent) '+mix+'%,#2a3b44)"><span class="sw sq" style="background:'+m.mHex+'"></span>'+m.name+' ('+m.k+')<small>'+(i===0?"top":i===3?"bottom":"")+'</small></div>';
+  });
+  L.innerHTML=html;
+  var names={Al:"Aluminium sulphate",Cu:"Copper sulphate",Zn:"Zinc sulphate",Fe:"Ferrous sulphate (iron(II) sulphate)"};
+  var rows='<tr><th>Compound</th><th>Formula</th><th>Solution colour</th></tr>';
+  ["Al","Cu","Zn","Fe"].forEach(function(k){
+    var m=METALS.filter(function(x){return x.k===k;})[0];
+    rows+='<tr><td>'+names[k]+'</td><td>'+m.f+'</td><td><span class="sw" style="background:'+m.solHex+'"></span>'+cap(m.solCol)+'</td></tr>';
+  });
+  rows+='<tr><th>Metal</th><th>Symbol</th><th>Looks like</th></tr>';
+  ["Cu","Al","Zn","Fe"].forEach(function(k){
+    var m=METALS.filter(function(x){return x.k===k;})[0];
+    rows+='<tr><td>'+m.name+'</td><td>'+m.k+'</td><td><span class="sw sq" style="background:'+m.mHex+'"></span>'+cap(m.mCol)+'</td></tr>';
+  });
+  $("#facts").innerHTML=rows;
+})();
+
+/* ---------- grid ---------- */
+var coverMode=false,revealed=0;
+function solChange(m,s){
+  var from=s.solCol,to=m.solCol;
+  return from===to?("The solution stays "+from+"."):("The solution changes from <b>"+from+"</b> to <b>"+to+"</b>.");
+}
+function buildGrid(){
+  var h='<table class="grid"><thead><tr><th class="corner"><span>Metal strip &#8595;</span><span>Solution &#8594;</span></th>';
+  METALS.forEach(function(s){h+='<th scope="col"><b>'+s.f+'</b><small><span class="sw" style="background:'+s.solHex+'"></span>'+s.solCol+'</small></th>';});
+  h+='</tr></thead><tbody>';
+  METALS.forEach(function(m){
+    h+='<tr><th scope="row"><b>'+m.name+'</b><small><span class="sw sq" style="background:'+m.mHex+'"></span>'+m.mCol+'</small>'+(m.ws?'<em class="ws">on your worksheet</em>':'')+'</th>';
+    METALS.forEach(function(s){
+      var cls=same(m,s)?"same":reacts(m,s)?"yes":"no";
+      var label=cls==="same"?"Same metal":cls==="yes"?"&#10003; Reacts":"&#10005; No reaction";
+      var sub=cls==="yes"?s.k+" forms":"";
+      h+='<td><button class="cell '+cls+(coverMode?" covered":"")+'" data-m="'+m.k+'" data-s="'+s.k+'" aria-label="'+m.name+' in '+s.sulf+'">'+tube(m,s,true,0.8)+'<b>'+label+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</button></td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  $("#grid").innerHTML=h;
+  revealed=0;updateCount();
+}
+function updateCount(){$("#revCount").textContent=revealed+" of 16 revealed";}
+function findM(k){return METALS.filter(function(x){return x.k===k;})[0];}
+function showDetail(m,s){
+  var d=$("#detail"),html="";
+  d.classList.remove("muted");
+  var tubes='<div class="tubes"><figure>'+tube(m,s,false,1.5)+'<figcaption>At the start</figcaption></figure><figure>'+tube(m,s,true,1.5)+'<figcaption>After a while</figcaption></figure></div>';
+  var head='<h3 style="margin-bottom:6px">'+m.name+' strip in '+s.sulf+' solution</h3>';
+  if(same(m,s)){
+    html='<div class="detail">'+tubes+'<div>'+head+'<span class="verdict s">Same metal</span><p>'+m.name+' is already the metal in this solution, so there is nothing to displace. Nothing changes.</p></div></div>';
+  }else if(reacts(m,s)){
+    html='<div class="detail">'+tubes+'<div>'+head+'<span class="verdict y">Reacts</span>'+
+     '<p><b>'+m.k+'</b> is more reactive than <b>'+s.k+'</b>, so it pushes '+s.lname+' out of the solution.</p>'+
+     '<p style="margin-top:6px">'+solChange(m,s)+' A <b>'+s.mCol+'</b> solid ('+s.lname+') coats the strip.</p>'+
+     '<div class="eq"><span class="muted">Words: </span>'+m.lname+' + '+s.sulf+' \u2192 '+m.sulf+' + '+s.lname+'</div>'+
+     '<div class="eq"><span class="muted">Symbols: </span>'+EQ[m.k+s.k]+'</div></div></div>';
+  }else{
+    html='<div class="detail">'+tubes+'<div>'+head+'<span class="verdict n">No reaction</span>'+
+     '<p><b>'+m.k+'</b> is less reactive than <b>'+s.k+'</b>, so it cannot push '+s.lname+' out of its solution.</p>'+
+     '<p style="margin-top:6px">The strip stays '+m.mCol+' and the solution stays '+s.solCol+'.</p>'+
+     '<div class="eq">'+m.k+' + '+s.ft+' \u2192 no reaction</div></div></div>';
+  }
+  d.innerHTML=html;
+}
+$("#grid").addEventListener("click",function(e){
+  var b=e.target.closest(".cell");if(!b)return;
+  var m=findM(b.getAttribute("data-m")),s=findM(b.getAttribute("data-s"));
+  if(b.classList.contains("covered")){b.classList.remove("covered");revealed++;updateCount();}
+  $$(".cell.sel").forEach(function(c){c.classList.remove("sel");});
+  b.classList.add("sel");
+  showDetail(m,s);
+  if(window.innerWidth<760){$("#detailCard").scrollIntoView({behavior:"smooth",block:"nearest"});}
+});
+function setMode(cover){
+  coverMode=cover;
+  $("#m-study").setAttribute("aria-pressed",String(!cover));
+  $("#m-cover").setAttribute("aria-pressed",String(cover));
+  $("#coverTools").hidden=!cover;
+  $("#coverTools").style.display=cover?"flex":"none";
+  buildGrid();
+}
+$("#m-study").addEventListener("click",function(){setMode(false);});
+$("#m-cover").addEventListener("click",function(){setMode(true);});
+$("#recover").addEventListener("click",function(){buildGrid();});
+$("#revAll").addEventListener("click",function(){$$(".cell.covered").forEach(function(c){c.classList.remove("covered");});revealed=16;updateCount();});
+buildGrid();$("#coverTools").style.display="none";
+
+/* ---------- tabs ---------- */
+function switchTab(name){
+  $$(".tab").forEach(function(t){t.setAttribute("aria-selected",String(t.getAttribute("data-tab")===name));});
+  $("#p-pattern").hidden=name!=="pattern";
+  $("#p-quiz").hidden=name!=="quiz";
+  if(name==="quiz"&&!G){showHome();}
+  window.scrollTo(0,0);
+}
+$$(".tab").forEach(function(t){t.addEventListener("click",function(){switchTab(t.getAttribute("data-tab"));});});
+
+/* ---------- save ---------- */
+var KEY="metalReactivityLab.v1";
+var save={xp:0,best:0,rounds:0,totalCorrect:0,noReact:0,perfect:0,focus:true,badges:{},stats:{}};
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);for(var k in p){save[k]=p[k];}}}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(save));}catch(e){}}
+
+/* ---------- levels + badges ---------- */
+var LEVELS=[[0,"Lab newbie"],[40,"Beaker buddy"],[100,"Bunsen burner"],[180,"Reaction rookie"],[280,"Displacement detective"],[400,"Reactivity ranger"],[550,"Series sage"],[750,"Grand alchemist"]];
+function lvl(xp){
+  var n=0;for(var i=0;i<LEVELS.length;i++){if(xp>=LEVELS[i][0])n=i;}
+  var cur=LEVELS[n][0],next=LEVELS[n+1]?LEVELS[n+1][0]:null;
+  return {n:n+1,title:LEVELS[n][1],cur:cur,next:next,pct:next?Math.round((xp-cur)/(next-cur)*100):100};
+}
+var BADGES=[
+ {id:"first",ic:"\u2697\uFE0F",n:"First spark",d:"Get your first answer right",t:function(){return save.totalCorrect>=1;}},
+ {id:"s5",ic:"\uD83D\uDD25",n:"On fire",d:"Reach a streak of 5",t:function(){return save.best>=5;}},
+ {id:"s10",ic:"\u26A1",n:"Unstoppable",d:"Reach a streak of 10",t:function(){return save.best>=10;}},
+ {id:"perfect",ic:"\uD83C\uDFC6",n:"Flawless round",d:"Score 10 out of 10",t:function(){return save.perfect>=1;}},
+ {id:"ninja",ic:"\uD83E\uDD77",n:"No-reaction ninja",d:"Spot 8 'no reaction' cases",t:function(){return save.noReact>=8;}},
+ {id:"boss",ic:"\uD83D\uDC51",n:"Boss slayer",d:"Beat 3 mystery-metal bosses",t:function(){return ((save.stats.boss||{}).c||0)>=3;}},
+ {id:"sage",ic:"\uD83E\uDDEA",n:"Series sage",d:"Reach level 5",t:function(){return lvl(save.xp).n>=5;}},
+ {id:"grind",ic:"\uD83D\uDCAA",n:"Practice machine",d:"50 correct answers in total",t:function(){return save.totalCorrect>=50;}}
+];
+function toast(msg){
+  var t=$("#toast"),d=document.createElement("div");d.textContent=msg;t.appendChild(d);
+  setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},3200);
+}
+function checkBadges(){
+  BADGES.forEach(function(b){
+    if(!save.badges[b.id]&&b.t()){save.badges[b.id]=Date.now();if(G)G.newBadges.push(b);toast(b.ic+" Badge unlocked: "+b.n);}
+  });
+}
+
+/* ---------- question generators ---------- */
+function mc(tag,html,correct,wrongs,explain,extra){
+  var seen={};seen[correct]=1;var ws=[];
+  wrongs.forEach(function(w){if(!seen[w]){seen[w]=1;ws.push(w);}});
+  ws=shuffle(ws).slice(0,3);
+  var opts=shuffle([{t:correct,ok:true}].concat(ws.map(function(w){return {t:w,ok:false};})));
+  var q={tag:tag,html:html,opts:opts,explain:explain,xp:10};
+  if(extra){for(var k in extra){q[k]=extra[k];}}
+  return q;
+}
+function pick(f){return rnd(PAIRS.filter(function(p){return f(p[0],p[1]);}));}
+function why(m,s){
+  if(same(m,s))return "Same metal, so there is nothing to displace.";
+  return reacts(m,s)?("<b>"+m.k+"</b> is more reactive than <b>"+s.k+"</b>, so it displaces "+s.lname+" from the solution."):("<b>"+m.k+"</b> is less reactive than <b>"+s.k+"</b>, so it cannot displace it. No reaction.");
+}
+function qReact(){
+  var r=Math.random(),p=r<0.12?pick(function(m,s){return same(m,s);}):pick(function(m,s){return Math.random()<0.5?reacts(m,s):(!reacts(m,s)&&!same(m,s));});
+  var m=p[0],s=p[1],yes=reacts(m,s);
+  return mc("react","A strip of <b>"+m.name.toLowerCase()+"</b> is placed in <b>"+s.sulf+"</b> solution ("+s.ft+"). Does a reaction happen?",
+    yes?"Yes, it reacts":"No reaction",[yes?"No reaction":"Yes, it reacts"],why(m,s),{noReact:!yes,two:true});
+}
+var TRANS=["Blue \u2192 colourless","Blue \u2192 light green","Light green \u2192 colourless","Colourless \u2192 blue","Colourless \u2192 light green","Stays the same colour"];
+function qColour(){
+  var p=pick(function(m,s){return reacts(m,s)&&m.solCol!==s.solCol;}),m=p[0],s=p[1];
+  var ans=cap(s.solCol)+" \u2192 "+m.solCol;
+  return mc("colour","<b>"+m.name+"</b> is placed in <b>"+s.sulf+"</b> solution. What happens to the colour of the solution?",ans,TRANS,
+    why(m,s)+" The "+s.solCol+" "+s.k+"\u00B2\u207A ions are replaced by "+m.solCol+" "+m.k+" ions.");
+}
+function dep(x){return cap(x.mCol)+" solid ("+x.lname+")";}
+function qDeposit(){
+  var p=pick(function(m,s){return !same(m,s)&&Math.random()<0.6?reacts(m,s):!same(m,s);}),m=p[0],s=p[1],yes=reacts(m,s);
+  var NONE="Nothing forms, no reaction";
+  var pool=[dep(findM("Zn")),dep(findM("Fe")),dep(findM("Cu"))];
+  return mc("deposit","<b>"+m.name+"</b> strip in <b>"+s.sulf+"</b> solution. What do you see on the strip?",
+    yes?dep(s):NONE,yes?pool.concat([NONE]):pool,why(m,s)+(yes?" The displaced "+s.lname+" is a "+s.mCol+" solid.":""));
+}
+function qProducts(){
+  var p=pick(function(m,s){return !same(m,s);}),m=p[0],s=p[1],yes=reacts(m,s);
+  var good=m.sulf+" + "+s.lname,swap=s.sulf+" + "+m.lname,hyd=m.sulf+" + hydrogen";
+  return mc("products","Complete the word equation:<br><b>"+m.lname+" + "+s.sulf+" \u2192 ?</b>",yes?good:"No reaction",
+    yes?[swap,hyd,"No reaction"]:[good,swap,hyd],why(m,s)+(yes?" Products: "+good+".":""));
+}
+function qCompare(){
+  var three=shuffle(METALS).slice(0,3),most=Math.random()<0.5;
+  var sorted=three.slice().sort(function(a,b){return a.rank-b.rank;});
+  var a=most?sorted[0]:sorted[2];
+  return mc("compare","Which of these metals is the <b>"+(most?"most":"least")+" reactive</b>: "+three.map(function(x){return x.name;}).join(", ")+"?",
+    a.name,three.map(function(x){return x.name;}),"The order is <b>Al > Zn > Fe > Cu</b>. Of these three, "+a.name.toLowerCase()+" is the "+(most?"most":"least")+" reactive.");
+}
+function qLadder(){
+  var i=Math.floor(Math.random()*4),parts=METALS.map(function(m,j){return j===i?"<b>____</b>":m.k;}).join(" > ");
+  return mc("ladder","Fill the gap, most reactive to least reactive:<br>"+parts,METALS[i].k,METALS.map(function(m){return m.k;}),"The order is <b>Al > Zn > Fe > Cu</b>. Try the line <i>\"All Zebras Find Cake\"</i> to remember it.");
+}
+var GAPS=["Above aluminium","Between Al and Zn","Between Zn and Fe","Between Fe and Cu","Below copper"];
+function qBoss(){
+  var g=Math.floor(Math.random()*5),r=[],nr=[],list="";
+  METALS.forEach(function(s,k){
+    var yes=g<=k;(yes?r:nr).push(s.k);
+    list+="<li><b>X</b> in "+s.ft+" \u2192 "+(yes?"\u2713 reacts":"\u2715 no reaction")+"</li>";
+  });
+  var q=mc("boss","Boss round. A mystery metal <b>X</b> is tested:<ul>"+list+"</ul>Where does X sit in the reactivity series?",GAPS[g],GAPS,
+    "X displaced "+(r.length?r.join(", "):"none of the metals")+" and could not displace "+(nr.length?nr.join(", "):"any metal")+". It beats the metals it displaces and loses to the rest, so it sits <b>"+GAPS[g].toLowerCase()+"</b>.",{boss:true,xp:25});
+  q.opts=GAPS.map(function(t,i){return {t:t,ok:i===g};});
+  return q;
+}
+function qWhy(){
+  var p=pick(function(m,s){return !same(m,s);}),m=p[0],s=p[1],yes=reacts(m,s);
+  var good=yes?(m.name+" is more reactive than "+s.lname+", so it displaces it"):(m.name+" is less reactive than "+s.lname+", so it cannot displace it");
+  var rev=yes?(m.name+" is less reactive than "+s.lname+", so it displaces it"):(m.name+" is more reactive than "+s.lname+", but it needs heating");
+  return mc("why",yes?"Why does <b>"+m.lname+"</b> react with <b>"+s.sulf+"</b>?":"Why does <b>"+m.lname+"</b> <u>not</u> react with <b>"+s.sulf+"</b>?",good,
+    [rev,"Every metal reacts with every sulphate solution","Metals only react with acids, never with solutions"],why(m,s));
+}
+function qFacts(){
+  var t=Math.floor(Math.random()*4),m=rnd(METALS);
+  if(t===0)return mc("facts","What is the formula of <b>"+m.sulf+"</b>?",m.ft,METALS.map(function(x){return x.ft;}),"<b>"+cap(m.sulf)+"</b> is "+m.ft+".");
+  if(t===1)return mc("facts","What colour is <b>"+m.ft+"</b> solution?",cap(m.solCol),["Colourless","Light green","Blue","Reddish-brown"],m.ft+" solution is "+m.solCol+".");
+  if(t===2)return mc("facts","What colour is <b>"+m.lname+"</b> metal?",cap(m.mCol),METALS.map(function(x){return cap(x.mCol);}),cap(m.lname)+" looks "+m.mCol+".");
+  return mc("facts","Which compound has the formula <b>"+m.ft+"</b>?",cap(m.sulf),METALS.map(function(x){return cap(x.sulf);}),m.ft+" is "+m.sulf+".");
+}
+var TAGS={react:["Will it react?",qReact],colour:["Colour change",qColour],deposit:["What forms",qDeposit],products:["Word equations",qProducts],compare:["Compare metals",qCompare],ladder:["The order",qLadder],boss:["Boss round",qBoss],why:["Explain why",qWhy],facts:["Formulae and colours",qFacts]};
+var lastHtml="";
+function genQ(){
+  var keys=Object.keys(TAGS),w=keys.map(function(t){
+    var st=save.stats[t]||{a:0,c:0};
+    var rate=st.a>=3?1-st.c/st.a:0.4;
+    var wt=save.focus?(0.6+rate*2.2):1;
+    return t==="boss"?wt*0.5:wt;
+  });
+  var q,tries=0;
+  do{
+    var sum=w.reduce(function(a,b){return a+b;},0),r=Math.random()*sum,i=0;
+    for(;i<w.length;i++){r-=w[i];if(r<=0)break;}
+    q=TAGS[keys[Math.min(i,keys.length-1)]][1]();tries++;
+  }while(q.html===lastHtml&&tries<6);
+  lastHtml=q.html;return q;
+}
+
+/* ---------- game ---------- */
+var G=null;
+function hud(){
+  var L=lvl(save.xp);
+  var right=G.mode==="round"?"Question "+Math.min(G.answered?G.i:G.i+1,G.total)+" of "+G.total:"Lives "+"\u2764\uFE0F".repeat(G.lives)+"\uD83E\uDD0D".repeat(3-G.lives);
+  return '<div class="card hud"><div class="lv"><b>Level '+L.n+'</b> '+L.title+'<div class="bar"><i style="width:'+L.pct+'%"></i></div></div><span class="pill">\uD83D\uDD25 '+G.streak+'</span><span class="pill">'+right+'</span></div>';
+}
+function showHome(){
+  G=null;
+  var L=lvl(save.xp),q=$("#quiz");
+  var bd=BADGES.map(function(b){return '<div class="badge '+(save.badges[b.id]?"on":"")+'"><div class="ic">'+b.ic+'</div><b>'+b.n+'</b><small>'+b.d+'</small></div>';}).join("");
+  var sk="";
+  Object.keys(TAGS).forEach(function(t){
+    var st=save.stats[t];
+    var pct=st&&st.a?Math.round(st.c/st.a*100):0;
+    sk+='<div class="skill"><span>'+TAGS[t][0]+'</span><div class="bar"><i style="width:'+pct+'%"></i></div><span>'+(st&&st.a?pct+"%":"new")+'</span></div>';
+  });
+  q.innerHTML=
+   '<div class="stack">'+
+   '<div class="card"><h2>Level '+L.n+': '+L.title+'</h2>'+
+   '<div class="bar" style="height:14px;margin-top:10px"><i style="width:'+L.pct+'%"></i></div>'+
+   '<p class="muted" style="margin-top:8px">'+save.xp+' XP'+(L.next?' \u2022 '+(L.next-save.xp)+' to the next level':' \u2022 top level reached')+' \u2022 best streak '+save.best+' \u2022 '+save.rounds+' rounds played</p>'+
+   '<div class="modes"><button class="mode" id="go-round"><h3>Quick round</h3><p>10 questions. Earn stars and bonus XP. Play as many rounds as you like.</p></button>'+
+   '<button class="mode" id="go-surv"><h3>Survival</h3><p>3 lives, no limit. How long can you keep your streak alive?</p></button></div>'+
+   '<label class="chip"><input type="checkbox" id="focus"'+(save.focus?" checked":"")+'> Give me more of my weak spots</label></div>'+
+   '<div class="card"><h2>Skill meters</h2><p class="muted" style="margin-top:4px">Percentage of answers you got right in each topic.</p><div class="skills">'+sk+'</div></div>'+
+   '<div class="card"><h2>Badges</h2><div class="badges">'+bd+'</div></div>'+
+   '<div><button class="btn" id="reset">Reset my progress</button></div></div>';
+  $("#go-round").onclick=function(){startGame("round");};
+  $("#go-surv").onclick=function(){startGame("survival");};
+  $("#focus").onchange=function(){save.focus=this.checked;persist();};
+  var rb=$("#reset"),armed=false;
+  rb.onclick=function(){
+    if(!armed){armed=true;rb.textContent="Tap again to erase all progress";setTimeout(function(){armed=false;rb.textContent="Reset my progress";},4000);return;}
+    save={xp:0,best:0,rounds:0,totalCorrect:0,noReact:0,perfect:0,focus:true,badges:{},stats:{}};persist();showHome();
+  };
+}
+function startGame(mode){
+  G={mode:mode,i:0,total:10,lives:3,streak:0,right:0,gained:0,q:null,answered:false,startLv:lvl(save.xp).n,newBadges:[]};
+  nextQ();
+}
+function nextQ(){
+  if((G.mode==="round"&&G.i>=G.total)||(G.mode==="survival"&&G.lives<=0)){endGame();return;}
+  G.q=genQ();G.answered=false;renderQ();
+}
+function renderQ(){
+  var q=G.q,two=q.two;
+  var o=q.opts.map(function(x,i){return '<button class="opt" data-i="'+i+'"><kbd>'+(i+1)+'</kbd><span>'+x.t+'</span></button>';}).join("");
+  $("#quiz").innerHTML=hud()+
+   '<div class="card qcard" id="qcard"><span class="qtag">'+TAGS[q.tag][0]+(q.boss?" \u2022 worth 25 XP":"")+'</span><div class="qtext">'+q.html+'</div>'+
+   '<div class="opts'+(two?" two":"")+'" id="opts">'+o+'</div><div id="fb"></div></div>'+
+   '<div style="margin-top:12px"><button class="btn" id="quit">End and see results</button></div>';
+  $$(".opt").forEach(function(b){b.onclick=function(){answer(parseInt(b.getAttribute("data-i"),10));};});
+  $("#quit").onclick=function(){if(G.i>0||G.answered){endGame();}else{showHome();}};
+}
+var PRAISE=["Nailed it!","Correct!","Spot on!","Yes! Keep going.","That's the one!"];
+function answer(i){
+  if(G.answered)return;
+  G.answered=true;
+  var q=G.q,ok=q.opts[i].ok,st=save.stats[q.tag]||(save.stats[q.tag]={a:0,c:0});
+  st.a++;
+  $$(".opt").forEach(function(b,j){b.disabled=true;if(q.opts[j].ok)b.classList.add("right");else if(j===i)b.classList.add("wrong");else b.classList.add("dim");});
+  var fb=$("#fb"),before=lvl(save.xp).n,msg="";
+  if(ok){
+    st.c++;save.totalCorrect++;G.right++;
+    var bonus=Math.min(G.streak,6)*2,gain=(q.boss?25:10)+bonus;
+    G.streak++;if(G.streak>save.best)save.best=G.streak;
+    save.xp+=gain;G.gained+=gain;
+    if(q.noReact)save.noReact++;
+    msg='<div class="fb good"><b class="h">'+rnd(PRAISE)+' +'+gain+' XP</b>'+q.explain+'</div>';
+    var pop=document.createElement("span");pop.className="pop";pop.textContent="+"+gain+" XP";$("#qcard").appendChild(pop);
+  }else{
+    G.streak=0;if(G.mode==="survival")G.lives--;
+    msg='<div class="fb bad"><b class="h">Not quite.</b>'+q.explain+'</div>';
+    $("#qcard").classList.add("shake");
+  }
+  G.i++;
+  var done=(G.mode==="round"&&G.i>=G.total)||(G.mode==="survival"&&G.lives<=0);
+  fb.innerHTML=msg+'<div style="margin-top:12px"><button class="btn primary" id="next">'+(done?"See results":"Next question")+'</button></div>';
+  $("#next").onclick=nextQ;$("#next").focus({preventScroll:true});
+  var L=lvl(save.xp);if(L.n>before)toast("\uD83C\uDF89 Level up! You are now: "+L.title);
+  checkBadges();persist();
+  var hudEl=$(".hud");if(hudEl){hudEl.outerHTML=hud();}
+}
+function endGame(){
+  var g=G;
+  if(g.i===0){showHome();return;}
+  var stars=0,ratio=g.right/Math.max(g.i,1);
+  if(g.mode==="round"&&g.i>=g.total){
+    save.rounds++;
+    var bonus=10;if(g.right===g.total){bonus+=20;save.perfect++;}
+    save.xp+=bonus;g.gained+=bonus;
+    stars=ratio>=0.9?3:ratio>=0.7?2:ratio>=0.5?1:0;
+  }else if(g.mode==="survival"){
+    save.rounds++;stars=g.right>=15?3:g.right>=8?2:g.right>=3?1:0;
+  }
+  var before=g.startLv,L=lvl(save.xp);
+  checkBadges();persist();
+  var weak=null,wr=2;
+  Object.keys(save.stats).forEach(function(t){var s=save.stats[t];if(s.a>=2){var r=s.c/s.a;if(r<wr){wr=r;weak=t;}}});
+  var nb=g.newBadges.map(function(b){return b.ic+" "+b.n;}).join(", ");
+  var title=stars===3?"Brilliant!":stars===2?"Great work!":stars===1?"Good start. Go again!":"Every round makes you sharper.";
+  $("#quiz").innerHTML=
+   '<div class="card" style="text-align:center"><h2>'+title+'</h2><div class="stars" aria-label="'+stars+' of 3 stars">'+"\u2605".repeat(stars)+'<span style="opacity:.25">'+"\u2605".repeat(3-stars)+'</span></div>'+
+   '<div class="sum"><div><b>'+g.right+'/'+g.i+'</b>correct</div><div><b>+'+g.gained+'</b>XP earned</div><div><b>'+g.streak+'</b>final streak</div><div><b>'+save.best+'</b>best streak</div></div>'+
+   (L.n>before?'<p><b>Level up!</b> You are now Level '+L.n+': '+L.title+'.</p>':'')+
+   (nb?'<p style="margin-top:6px"><b>New badges:</b> '+nb+'</p>':'')+
+   (weak?'<p class="muted" style="margin-top:8px">Weakest topic so far: <b>'+TAGS[weak][0]+'</b>. The weak-spot setting will serve you more of these.</p>':'')+
+   '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px"><button class="btn primary" id="again">Play again</button><button class="btn" id="home">Home</button><button class="btn" id="topat">Back to the pattern grid</button></div></div>';
+  $("#again").onclick=function(){startGame(g.mode);};
+  $("#home").onclick=showHome;
+  $("#topat").onclick=function(){G=null;switchTab("pattern");};
+  G=null;
+}
+document.addEventListener("keydown",function(e){
+  if(!G||$("#p-quiz").hidden)return;
+  if(e.key>="1"&&e.key<="4"&&!G.answered&&G.q&&G.q.opts[parseInt(e.key,10)-1]){answer(parseInt(e.key,10)-1);}
+  else if((e.key==="Enter")&&G.answered){var n=$("#next");if(n&&document.activeElement!==n){n.click();}}
+});
+})();
+</script>
+</body>
+</html>
