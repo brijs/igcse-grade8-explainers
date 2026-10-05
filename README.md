@@ -18,6 +18,7 @@ python3 -m http.server 8000     # then browse to http://localhost:8000/
 |---|---|---|---|---|
 | Physics | [Physics with Mummy](https://brijs.github.io/igcse-grade8-explainers/explainers/physics-with-mummy/) | 17 | Physical quantities, motion graphs, density, thermal energy transfer | [folder](explainers/physics-with-mummy/) |
 | Chemistry | [Chemistry with Mummy](https://brijs.github.io/igcse-grade8-explainers/explainers/chemistry-with-mummy/) | 17 | Structure of the atom and the periodic table; chemical bonding and structure of materials; displacement reactions | [folder](explainers/chemistry-with-mummy/) |
+| Chemistry | [Metal Reactivity Lab](https://brijs.github.io/igcse-grade8-explainers/explainers/metal-reactivity-lab/) | 1 lab | Reactivity series and displacement reactions | [folder](explainers/metal-reactivity-lab/) |
 | Biology | [Biology with Mummy](https://brijs.github.io/igcse-grade8-explainers/explainers/biology-with-mummy/) | 17 | Photosynthesis and transport in plants; variation and inheritance | [folder](explainers/biology-with-mummy/) |
 | Computer Science | [Computer Science with Mummy](https://brijs.github.io/igcse-grade8-explainers/explainers/computer-science-with-mummy/) | 21 | Digital citizenship and network security; spreadsheets; logic gates and circuits; design thinking and CAD | [folder](explainers/computer-science-with-mummy/) |
 
