@@ -17,7 +17,7 @@ window.EXPLAINERS = [
       { term: 'Term 2 (exam revision)', items: [
         { title: 'Chemistry with Mummy', path: 'explainers/chemistry-with-mummy/',
           blurb: 'Seventeen narrated, interactive scenes: the atom and the periodic table, ionic and covalent bonding, structures and properties, and displacement reactions.',
-          topics: ['Atoms and the periodic table', 'Bonding and structure', 'Displacement reactions'], status: 'ready',
+          topics: ['Atoms and the periodic table', 'Bonding and structure', 'Displacement reactions'], status: 'ready' },
         { title: 'Metal Reactivity Lab', path: 'explainers/metal-reactivity-lab/',
           blurb: 'An interactive lab: test metals against water, acid and salt solutions to build the reactivity series and predict displacement reactions.',
           topics: ['Reactivity series', 'Displacement reactions'], status: 'ready' }
